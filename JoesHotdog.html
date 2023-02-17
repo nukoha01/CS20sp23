@@ -1,0 +1,142 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    body { background-image: url(hotdog.jpeg); background-repeat: no-repeat; background-size: cover; height: 100vh;}
+    h1{text-align: center; color: white; font-size: 70px;}
+    ul{text-align: center; list-style: none; font-size: 42px; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; color: Light blueviolet;}
+</style>
+<body>
+    <p style="background-image: url('img_girl.jpg');">
+   <div class="wrapper">
+
+    <h1 >Welcome to Joe's Hotdog Stand</h1>
+    
+    <div class="container">
+        <ul class="myUL">
+            <li id="hotdogs"></li>
+            <li id="prefinal"></li>
+            <li id="discount"></li>
+            <li id="tax"></li>
+            <li id="total"></li>
+            <li id="bye"></li>
+        </ul>
+
+    </div>
+
+    <script type="text/javascript">
+        var x;
+        x = prompt("How many hotdogs do you want");
+        var y 
+        y = prompt("How many fries do you want");
+        var z
+        z = prompt("How many sodas do you want");
+
+        var subTot;
+        
+        subTot = ((parseFloat(x) * 4) + (3.5* parseFloat(y))   +  (parseFloat(z) * 1.75) )
+        prefinal = subTot;
+       
+        var discount;
+        discount = 0;
+        if (subTot >= 20 ){
+            subTot = subTot - (.1* subTot);
+            discount = .1*subTot;
+        }
+        else{
+            subTot = subTot;
+        }
+
+        var store;
+        wordify = discount.toString();
+        dot = wordify.indexOf('.');
+        if(( (wordify.length + 1) >=  dot + 3) && (dot != -1) ){
+           store =   dot + 3;
+        
+            if (parseFloat(wordify[store] < 5)){
+                 discount= wordify.substring(0, (dot+3));
+                
+            }else{
+                discount = wordify.substring(0, (dot+2));
+                reVised = parseFloat(wordify[dot+2]) + 1;
+                discount = discount + reVised.toString();
+            }
+        
+        }
+        else{
+          discount = discount.toString();
+        }
+
+
+
+
+
+        var tax;
+        subTot = subTot + ( .0625 * subTot);
+        var subfinal;
+        tax =  .0625 * subTot;
+       
+        
+        wordify = tax.toString();
+        dot = wordify.indexOf('.');
+        if(( (wordify.length + 1) >=  dot + 3) && (dot != -1) ){
+           store =   dot + 3;
+        
+            if (parseFloat(wordify[store] < 5)){
+                 tax = wordify.substring(0, (dot+3));
+                
+            }else{
+                tax = wordify.substring(0, (dot+2));
+                reVised = parseFloat(wordify[dot+2]) + 1;
+                tax = tax + reVised.toString();
+            }
+        
+        }
+        else{
+          tax = tax.toString();
+        }
+
+
+
+
+
+
+
+
+        wordify = subTot.toString();
+        dot = wordify.indexOf('.');
+        if(( (wordify.length + 1) >=  dot + 3) && (dot != -1) ){
+           store =   dot + 3;
+        
+            if (parseFloat(wordify[store] < 5)){
+                 subfinal = wordify.substring(0, (dot+3));
+                
+            }else{
+                subfinal = wordify.substring(0, (dot+2));
+                reVised = parseFloat(wordify[dot+2]) + 1;
+                subfinal = subfinal + reVised.toString();
+            }
+        
+        }
+        else{
+          subfinal = subTot.toString();
+        }
+
+
+
+        document.getElementById('hotdogs').innerHTML = "Congrats, you ordered " + x + " hotdogs, " + y + " french fries, and " + z + " sodas"  ;
+        document.getElementById('prefinal').innerHTML = "Your subtotal is $" + prefinal;
+        document.getElementById('discount').innerHTML = "You will receive a $" + discount + " discount!";
+        document.getElementById('tax').innerHTML = "Your tax is $" + tax+ ".";
+        document.getElementById('total').innerHTML = "Your total is $" +  subfinal;
+        document.getElementById('bye').innerHTML = "Have a nice meal!";
+        
+    </script>
+    </div>
+</body>
+</html>

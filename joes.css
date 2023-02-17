@@ -1,0 +1,23 @@
+.wrapper{
+    height: 100vh;
+    background: url(hotdog.jpeg) ;
+    background-size: cover;
+}
+
+h2{ text-align: center; font-style: italic; font-size: 70px; color: blueviolet; margin-top: 20px; margin-bottom: 60px; padding-bottom: 10px;}
+
+ul {
+    display: table;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+
+  div.container {
+    text-align: center;
+  }
+  
+  ul.myUL {
+    display: inline-block;
+    text-align: center;
+  }
