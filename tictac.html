@@ -1,0 +1,119 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href ="tictac.css">
+</head>
+<body>
+
+        <div style="text-align: center; padding-top: 10px;"><h1>Nate's Tic Tac Toe Game</h1></div> 
+        <div style="text-align: center; background-color: grey; font-size: 30px; " id = 'player'></div>
+
+        <div class = "outer"></div>
+        <div id="refresh" style="text-align: center; padding-top: 10px; font-size: 30px; background-color: green; height: 40px ; width: 40px contain;"></div>
+
+                <script type="text/javascript">
+                    var outer;
+                    outer = document.querySelector('.outer');
+
+                    var pieces = new Array(9);
+                    var clickedBy = new Array(9);
+
+                    for (let y = 0 ; y < 9 ; y++ ){
+                        let single = document.createElement('div');
+                        single.style.width = '181.29px';
+                        single.style.height ='181.29px';
+                        single.style.backgroundColor = 'white';
+                        single.style.borderColor = 'black';
+                        single.style.borderStyle = 'solid';
+                        single.style.borderWidth = '1px';
+                        single.className = 'square';
+                        pieces[y] = single;
+                        outer.append(single);
+                        clickedBy[y] = 'none';
+                        
+                    }
+
+                    var curr = 'X';
+                    document.getElementById('player').innerHTML = "Player " + curr + "'s Turn";
+                    
+                    var finalBut;
+                    function newGame(){
+                        let finalBut = document.getElementById('refresh');
+                        finalBut.innerHTML = 'Click Here to Start New Game';
+                        finalBut.onclick = function(){window.location.reload();}
+                    }
+                    function endConditions(){
+                        if ((clickedBy[1-1] == clickedBy[2-1]) && (clickedBy[2-1] == clickedBy[3-1])&&(clickedBy[3-1] != 'none')){
+                            document.getElementById('player').innerHTML = "Player " + clickedBy[1-1] + " wins!";
+                            newGame();
+                        }
+                        else if (clickedBy[4-1] == clickedBy[5-1] && clickedBy[5-1] == clickedBy[6-1]&&(clickedBy[6-1] != 'none')){
+                            document.getElementById('player').innerHTML = "Player " + clickedBy[4-1] + " wins!";
+                            newGame();
+                        }
+                        else if ((clickedBy[7-1] == clickedBy[8-1]) && (clickedBy[8-1] == clickedBy[9-1])&&(clickedBy[9-1] != 'none')){
+                            document.getElementById('player').innerHTML = "Player " + clickedBy[7-1] + " wins!";
+                            newGame();
+                        }
+                        else if ((clickedBy[1-1] == clickedBy[4-1]) && (clickedBy[4-1] == clickedBy[7-1])&&(clickedBy[7-1] != 'none')){
+                            document.getElementById('player').innerHTML = "Player " + clickedBy[1-1] + " wins!";
+                            newGame();
+                        }
+                        else if ((clickedBy[2-1] == clickedBy[5-1]) && (clickedBy[5-1] == clickedBy[8-1])&&(clickedBy[8-1] != 'none')){
+                            document.getElementById('player').innerHTML = "Player " + clickedBy[2-1] + " wins!";
+                            newGame();
+                        }
+                        else if ((clickedBy[3-1] == clickedBy[6-1]) && (clickedBy[6-1] == clickedBy[9-1])&&(clickedBy[9-1] != 'none')){
+                            document.getElementById('player').innerHTML = "Player " + clickedBy[3-1] + " wins!";
+                            newGame();
+                        }
+                        else if ((clickedBy[3-1] == clickedBy[5-1]) && (clickedBy[5-1] == clickedBy[7-1])&&(clickedBy[7-1] != 'none')){
+                            document.getElementById('player').innerHTML = "Player " + clickedBy[7-1] + " wins!";
+                            newGame();
+                        }
+                        else if ((clickedBy[1-1] == clickedBy[5-1]) && (clickedBy[5-1] == clickedBy[9-1])&&(clickedBy[9-1] != 'none')){
+                            document.getElementById('player').innerHTML = "Player " + clickedBy[1-1] + " wins!";
+                            newGame();
+                        }
+                        else if (clickedBy.includes('none') == true){
+                            document.getElementById('player').innerHTML = "Player " + curr + "'s Turn";
+                        }
+                        else{
+                            document.getElementById('player').innerHTML = "Stalemate! - Gameover";
+                            newGame();
+
+                        }
+                    };
+
+                    function setCurr(){
+                        if (curr == 'X'){
+                                curr = 'O';
+                        }
+                        else{
+                                curr = 'X';
+                        }
+                    };  
+                    
+                    function whenClicked(reeses,current){
+                        reeses.innerHTML = current;
+                        toReturn = current;
+                        setCurr();
+                        return toReturn;
+                    }
+
+                    for(let w = 0; w < 9; w++){
+                        pieces[w].addEventListener('click',function (){
+                            clickedBy[w] = whenClicked(pieces[w],curr);
+                            endConditions();
+                            
+                        },{once : true});
+                    } 
+                
+                     
+            </script>
+
+</body>
+</html>
