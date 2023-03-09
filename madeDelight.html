@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Jade Delight</title>
+</head>
+
+<body>
+<script>
+
+function MenuItem(name, cost)
+{
+	this.name = name;
+	this.cost=cost;
+}
+
+menuItems = new Array(
+	new MenuItem("Chicken Chop Suey", 5.5),
+	new MenuItem("Sweet and Sour Pork", 7.25),
+	new MenuItem("Shrimp Lo Mein", 6.80),
+	new MenuItem("Moo Shi Chicken", 9.50),
+	new MenuItem("Fried Rice", 3.25)
+);
+
+function makeSelect(name, minRange, maxRange)
+{
+	var t= "";
+	t = "<select name='" + name + "' size='1'>";
+	for (j=minRange; j<=maxRange; j++)
+	   t += "<option>" + j + "</option>";
+	t+= "</select>"; 
+	return t;
+}
+
+function td(content, className="")
+{
+	return "<td class = '" + className + "'>" + content + "</td>";
+}
+	
+</script>
+
+<h1>Jade Delight</h1>
+<form>
+
+<p class="userInfo"><label>First Name:</label> <input type="text"  name='fname' /></p>
+<p class="userInfo"><label>Last Name*:</label>  <input type="text"  name='lname' /></p>
+<p class="userInfo address"><label>Street*:</label> <input type="text" name='street' /></p>
+<p class="userInfo address"><label>City*:</label> <input type="text" name='city' /></p>
+<p class="userInfo"><label>Phone*:</label> <input type="text"  name='phone' /></p>
+<p> 
+	<input type="radio"  name="p_or_d" value = "pickup" checked="checked"/>Pickup  
+	<input type="radio"  name='p_or_d' value = 'delivery'/>
+	Delivery
+</p>
+<table border="0" cellpadding="3">
+  <tr>
+    <th>Select Item</th>
+    <th>Item Name</th>
+    <th>Cost Each</th>
+    <th>Total Cost</th>
+  </tr>
+<script>
+
+  var s = "";
+  for (i=0; i< menuItems.length; i++)
+  {
+	  s += "<tr>";
+	  s += td(makeSelect("quan" + i, 0, 10),"selectQuantity");
+	  s += td(menuItems[i].name, "itemName");
+	  s += td("$" +menuItems[i].cost.toFixed(2), "cost");
+	  s += td("$<input type='text' name='cost'/>", "totalCost");
+	  s+= "</tr>";
+  }
+  document.writeln(s);
+</script>
+</table>
+<p class="subtotal totalSection"><label>Subtotal</label>: 
+   $ <input type="text"  name='subtotal' id="subtotal" />
+</p>
+<p class="tax totalSection"><label>Mass tax 6.25%:</label>
+  $ <input type="text"  name='tax' id="tax" />
+</p>
+<p class="total totalSection"><label>Total:</label> $ <input type="text"  name='total' id="total" />
+</p>
+
+<input type = "button" value = "Submit Order" />
+
+</form>
+<script >
+
+
+
+	var formatter = document.getElementsByTagName('label');
+	var formats = [formatter[0] , formatter[1] , formatter[2] , formatter[3] , formatter[4] ];
+	for ( let a = 0; a < formats.length; a++){
+		formats[a].setAttribute("class", "fixer");
+	}
+	console.log(formats)
+	var link = document.createElement('link');
+	link.rel = 'stylesheet';
+	link.type = 'text/css';
+	link.href = 'jade_delight.css';
+	var header = document.getElementsByTagName('head');
+	header[0].appendChild(link);
+
+
+	var location = new Array(2);
+	location[0] = document.getElementsByTagName('p')[2];
+	location[1] = document.getElementsByTagName('p')[3];
+
+	function unhider(){
+		for(let k = 0; k < 2; k++){
+
+			location[k].style.display = "";
+		}
+	}
+	function hider(){
+		for(let k = 0; k < 2; k++){
+		
+			location[k].style.display = "none";
+		}
+	}
+	location[0].style.display = "none";
+	location[1].style.display = "none";	
+	pickDel = document.querySelectorAll('input[type=radio]')
+	pickDel[0].addEventListener('click',function() {hider()});
+	pickDel[1].addEventListener('click',function() {unhider()});
+
+	//row1
+
+	var total = document.getElementById("total")
+	var tax = document.getElementById("tax");
+	var summer = [];
+	var subTot = document.getElementById("subtotal");
+	var itemsArray =document.getElementsByTagName("select");
+	var selection =  new Array(5);
+	var chosen = new Array(5);
+	var textBox = new Array(5);
+	textBox = document.getElementsByName("cost");
+	costArray = document.getElementsByClassName("cost");
+	function updater0(){
+			selection[0] = itemsArray[0].options[itemsArray[0].selectedIndex];
+			chosen[0] = selection[0].innerHTML;
+			let textt = costArray[0].innerHTML;
+			textt = textt.substring(1,textt.length);
+			textBox[0].value =  String ( ( Math.round(  (parseFloat(chosen[0]) * parseFloat(textt)  )*100) /100).toFixed(2) );
+		for(let b = 0; b < textBox.length; b++ ){
+			
+			if (textBox[b].value == "" ||  textBox[b].value === undefined ) {
+				summer[b] = "0";
+			}
+			else{
+				summer[b] = textBox[b].value;
+			}
+			
+	}
+	subTot.value = String((Math.round((parseFloat(summer[0]) + parseFloat(summer[1]) + parseFloat(summer[2]) + parseFloat(summer[3]) + parseFloat(summer[4])) * 100) / 100 ).toFixed(2));
+	tax.value = String((Math.round((parseFloat(subTot.value) * .0625) * 100) / 100 ).toFixed(2));
+	total.value = String((Math.round( ( parseFloat(subTot.value) + parseFloat(tax.value) ) * 100 ) / 100 ).toFixed(2));
+
+	};
+	//row2
+	function updater1(){
+			selection[1] = itemsArray[1].options[itemsArray[1].selectedIndex];
+			chosen[1] = selection[1].innerHTML;
+			let textt = costArray[1].innerHTML;
+			textt = textt.substring(1,textt.length);
+			textBox[1].value =  String((Math.round((parseFloat(chosen[1]) * parseFloat(textt))*100) /100).toFixed(2));
+			for(let b = 0; b < textBox.length; b++ ){
+		if (textBox[b].value == "" ||  textBox[b].value === undefined ) {
+			summer[b] = "0";
+		}
+		else{
+			summer[b] = textBox[b].value;
+		}
+	}
+	subTot.value = String((Math.round((parseFloat(summer[0]) + parseFloat(summer[1]) + parseFloat(summer[2]) + parseFloat(summer[3]) + parseFloat(summer[4])) * 100 )/ 100 ).toFixed(2));
+	tax.value = String((Math.round((parseFloat(subTot.value) * .0625) * 100) / 100 ).toFixed(2));
+	total.value = String((Math.round( ( parseFloat(subTot.value) + parseFloat(tax.value) ) * 100 ) / 100 ).toFixed(2));
+
+	};
+	//row3
+	function updater2(){
+			selection[2] = itemsArray[2].options[itemsArray[2].selectedIndex];
+			chosen[2] = selection[2].innerHTML;
+			let textt = costArray[2].innerHTML;
+			textt = textt.substring(1,textt.length);
+			textBox[2].value =  String((Math.round((parseFloat(chosen[2]) * parseFloat(textt))*100) /100).toFixed(2));
+			for(let b = 0; b < textBox.length; b++ ){
+		
+		if (textBox[b].value == "" ||  textBox[b].value === undefined ) {
+			summer[b] = "0";
+		}
+		else{
+			summer[b] = textBox[b].value;
+		}
+	}
+	subTot.value = String((Math.round((parseFloat(summer[0]) + parseFloat(summer[1]) + parseFloat(summer[2]) + parseFloat(summer[3]) + parseFloat(summer[4])) * 100) / 100 ).toFixed(2));
+	tax.value = String((Math.round((parseFloat(subTot.value) * .0625) * 100) / 100 ).toFixed(2));
+	total.value = String((Math.round( ( parseFloat(subTot.value) + parseFloat(tax.value) ) * 100 ) / 100 ).toFixed(2));
+
+	};
+	//row4
+	function updater3(){
+			selection[3] = itemsArray[3].options[itemsArray[3].selectedIndex];
+			chosen[3] = selection[3].innerHTML;
+			let textt = costArray[3].innerHTML;
+			textt = textt.substring(1,textt.length);
+			textBox[3].value =  String((Math.round((parseFloat(chosen[3]) * parseFloat(textt))*100) /100).toFixed(2));
+			for(let b = 0; b < textBox.length; b++ ){
+		
+		if (textBox[b].value == "" ||  textBox[b].value === undefined ) {
+			summer[b] = "0";
+		}
+		else{
+			summer[b] = textBox[b].value;
+		}
+	}
+	subTot.value = String((Math.round((parseFloat(summer[0]) + parseFloat(summer[1]) + parseFloat(summer[2]) + parseFloat(summer[3]) + parseFloat(summer[4])) * 100) / 100 ).toFixed(2));
+	tax.value = String((Math.round((parseFloat(subTot.value) * .0625) * 100) / 100 ).toFixed(2));
+	total.value = String((Math.round( ( parseFloat(subTot.value) + parseFloat(tax.value) ) * 100 ) / 100 ).toFixed(2));
+
+	};
+	//row5
+	function updater4(){
+			selection[4] = itemsArray[4].options[itemsArray[4].selectedIndex];
+			chosen[4] = selection[4].innerHTML;
+			let textt = costArray[4].innerHTML;
+			textt = textt.substring(1,textt.length);
+			textBox[4].value =  String((Math.round((parseFloat(chosen[4]) * parseFloat(textt))*100) /100).toFixed(2));
+			for(let b = 0; b < textBox.length; b++ ){
+
+		if (textBox[b].value == "" ||  textBox[b].value === undefined ) {
+			summer[b] = "0";
+		}
+		else{
+			summer[b] = textBox[b].value;
+		}
+	}
+	subTot.value = String((Math.round((parseFloat(summer[0]) + parseFloat(summer[1]) + parseFloat(summer[2]) + parseFloat(summer[3]) + parseFloat(summer[4])) * 100) / 100 ).toFixed(2));
+	tax.value = String((Math.round((parseFloat(subTot.value) * .0625) * 100) / 100 ).toFixed(2));
+	total.value = String((Math.round( ( parseFloat(subTot.value) + parseFloat(tax.value) ) * 100 ) / 100 ).toFixed(2));
+	};
+	
+	itemsArray[0].addEventListener("change", function() {updater0(); } )
+	itemsArray[1].addEventListener("change", function() {updater1(); } )
+	itemsArray[2].addEventListener("change", function() {updater2(); } )
+	itemsArray[3].addEventListener("change", function() {updater3(); } )
+	itemsArray[4].addEventListener("change", function() {updater4(); } )
+
+
+	
+function validTime(){
+var p_OR_d;
+if (document.getElementsByTagName('p')[2].style.display == "none"){
+	p_OR_d = 15;
+}
+else{
+	p_OR_d = 45;
+}
+var readyTime;
+var dateOb = new Date();
+dateOb.setMinutes(dateOb.getMinutes() + p_OR_d);
+
+var temp = [dateOb.getHours(),dateOb.getMinutes(),dateOb.getSeconds()];
+
+readyTime = temp[0] + ":" + temp[1]  + ":" + temp[2] ;
+
+return readyTime;
+}
+
+
+function getaddy(){
+	if(	document.getElementsByTagName('p')[2].style.display == ""){
+		var addy = document.getElementsByTagName('p')[2].value;
+		var textFin0 = "Your delivery street is: " + addy;
+		return textFin0;
+	}
+	else{
+		return "";
+	}
+}
+function getCity(){
+	if(	document.getElementsByTagName('p')[3].style.display == ""){
+		var city =document.getElementsByTagName('p')[3].value;
+		var textFin = "Your city is: " + city;
+		return textFin;
+	}
+	else{
+		return "";
+	}
+}
+
+document.querySelector("form").setAttribute("name","thatForm");
+function valid(){
+	var lastName = document.forms.thatForm.lname.value;
+	var phone = document.forms.thatForm.phone.value;
+	var optStreet = document.forms.thatForm.street.value;
+	var cit = document.forms.thatForm.city.value;
+	if (lastName.trim() == "" || lastName.trim === undefined) {
+        window.alert("Please enter your last name.");
+        return false;
+    }
+	var phoneCount = 0;
+	if(phone.trim() != "" && phone.trim() !== undefined){
+		for (let h = 0; h < phone.length ; h++){
+			checker = phone.trim();
+			if(isNaN(checker[h])  == false ){
+				phoneCount += 1;
+			}
+		}
+		if( (phoneCount != 10) && (phoneCount != 7)){
+			window.alert("Please give a proper phone number.");
+			return false;
+		}
+
+	}
+	else{
+		window.alert("Please give a proper phone number.");
+        return false;
+	}
+
+	if(document.getElementsByTagName('p')[2].style.display == ""){
+		if (optStreet.trim() == "" || optStreet.trim === undefined) {
+			window.alert("Please enter your street name.");
+			return false;
+		}
+		if (cit.trim() == "" || cit.trim === undefined) {
+			window.alert("Please enter your city name.");
+			return false;
+		}
+	}
+
+	window.alert("Thanks for your Order. Your infomration is valid and being processed");
+	return true;
+}
+var validation = document.getElementsByTagName("input");
+
+var long ;
+var myWin;
+validation[validation.length - 1].addEventListener('click',function(){
+	if( valid()  == true){ 
+			var myWin = window.open("","Window");
+			console.log('reached here');
+			myWin.document.write('<html>' +
+		'<head>'  + 
+		'<title>Document</title>' + 
+		 '</head> ' +
+		 '<style>' + 
+			'body { background-color: white; background-repeat: no-repeat; background-size: cover; height: 100vh;}' +
+			 'h1{text-align: center; color: black; font-size: 70px;} ' +
+			  'ul{text-align: center; list-style: none; font-size: 42px; font-family: Impact, Haettenschweiler, sans-serif; color: Light blueviolet;} ' +
+			'</style>' +
+		' <body>   ' +
+		  '<p style = background-color: grey;> ' +
+			'<div class= "wrapper" > ' +
+			' <h1 >Request Complete: Thanks for your Order</h1> ' + 
+			' <div class="container"> ' +
+			'<ul class="myUL">' +
+				 '<li id= "pdTime"></li>' +
+				  '<li id= "addy1"></li> '+
+				  '<li id= "addy2"></li> '+
+				  ' <li id= "yourOrder"></li>' +
+				  '<li id= "yourSubtotal"></li> ' + 
+				' <li id= "yourTax"></li>' +
+				'<li id= "yourTotal"></li> ' +
+				' </ul> ' + 
+				'</div> '+ 
+				' <script type="text/javascript"> ' + 
+					'console.log("inside iffy");'+
+				' myWin.document.getElementById("pdTime").innerHTML() = "Your order will be ready by: " +  validTime();' +
+				 '<\/script> ' +
+				' </html> ');
+			console.log('here0');
+			myWin.document.getElementById('pdTime').innerHTML = "Awesome, your order will be ready by: " +  validTime();
+			myWin.document.getElementById('yourOrder').innerHTML = " You ordered " + itemsArray[0].options[itemsArray[0].selectedIndex].innerHTML  + " orders of Chicken Chop Suey for $" + textBox[0].value + ", " + itemsArray[1].options[itemsArray[1].selectedIndex].innerHTML + " orders of Sweet and Sour Pork for $" + textBox[1].value + ", " + itemsArray[2].options[itemsArray[2].selectedIndex].innerHTML + " orders of Shrimp Lo Mein for $" + textBox[2].value + ", " + itemsArray[3].options[itemsArray[3].selectedIndex].innerHTML + " orders of Moo Shi Chicken for $" + textBox[3].value + ", and " + itemsArray[4].options[itemsArray[4].selectedIndex].innerHTML + "  orders of Fried rice for  $" + textBox[4].value + '\n';
+			console.log('here1');
+			myWin.document.getElementById('yourSubtotal').textContent = " Your subtotal is $" + subTot.value;
+			myWin.document.getElementById('yourTax').textContent = "Your tax is $" + tax.value;
+			myWin.document.getElementById('yourTotal').textContent = "Your total is $" + total.value;
+
+	}}  );
+		
+</script>
+</body>
+</html>
