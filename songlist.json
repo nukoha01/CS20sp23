@@ -2,7 +2,7 @@
         {
         "artists": ["Kendrick Lamar"],
         "title": "Black Friday",
-        "genre": ["Rap","Hip-Hop"],
+        "genre": ["Rap,Hip-Hop"],
         "year": 2015 
         },
 
@@ -20,7 +20,7 @@
         },
 
         {
-            "artists": ["Crosby","Stills","Nash and Young"],
+            "artists": ["Crosby,Stills, Nash and Young"],
             "title": "Our House",
             "genre": ["Folk"],
             "year": 1970 
