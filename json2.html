@@ -1,0 +1,173 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HW7 Part 1</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }  
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+    </style>
+<p style="margin-top: 3cm;"> <h2 style="text-align: center;"> Formatted Songlist </h2>  </p>
+</body>
+<script type="text/javascript">
+        $.get( "https://nukoha01.github.io/CS20sp23/songlistnew.json", 
+      function( data ){
+        var styler;
+styler = '<style>' +
+        'table {' +
+         ' font-family: arial, sans-serif;' +
+         ' border-collapse: collapse;' +
+         ' width: 100%;' +
+       ' }' +
+        
+       ' td, th {' +
+         ' border: 1px solid #dddddd;' +
+          'text-align: left;' +
+         ' padding: 8px;' +
+       ' }' +
+        
+       ' tr:nth-child(even) {' +
+         ' background-color: #dddddd;' +
+       ' }' +
+    '</style>';
+    document.write(styler);   
+	   str = JSON.stringify(data);
+       document.write('<p style="margin-top: 3cm;"> <h2 style="text-align: center;"> Raw Data </h2> </p>');
+	   document.write(str);
+       document.write('<p style="margin-top: 3cm;"> <h2 style="text-align: center;"> Formatted Songlist </h2> </p>');
+
+       labels = ['Title','Artists','Genre','Year'];
+       function makeHeadings(myArray){
+            var headers;
+            headers =   '<tr>';
+            for ( let i = 0; i < labels.length; i++){
+                headers += '<th>' + labels[i] + '</th>'
+            } 
+            headers += '</tr>'
+            document.write(headers);
+       }
+
+       function populate(title,artists,genres,year){
+            var content = '';
+                for(let m = 0; m < data.songs.length; m++){
+                    content += '<tr>';
+                    content += '<td>' + data.songs[m].title + '</td>'
+                    content += '<td>'
+                    for(let w = 0; w < data.songs[m].artists.length ; w++){
+                        if( w != data.songs[m].artists.length - 1 ){
+                        content += data.songs[m].artists[w] + ', '
+                        }
+                        else{
+                            content += data.songs[m].artists[w]
+                        } 
+                    }
+                    content += '</td>';
+                    content += '<td>';
+                    for(let x = 0; x < data.songs[m].genre.length ; x++){
+                        if( x != data.songs[m].genre.length - 1 ){
+                        content += data.songs[m].genre[x] + ', '
+                        }
+                        else{
+                            content += data.songs[m].genre[x]
+                        } 
+                    }
+                    content += '</td>';
+                    content += '<td>' + data.songs[m].year + '</td>'
+                    content += '</tr>';
+                }
+            document.write(content)
+       }
+        document.write('<table>');
+        makeHeadings();
+        populate();
+        document.write('</table>');
+        document.write('<p style="margin-top: 3cm;"> <h2 style="text-align: center;"> Songlist Dropdown Form </h2> </p>')
+
+        var form = '';
+        form += '<form>'
+        form += '<table>' +
+            '<th> Choose Below </th>' +
+            '<th> Filtered Data </th>' +
+            '<tr>' +
+            '<td>';
+        form += '<label > Pick By Genre:'+'<label>' +
+            '<select   name =  " genres" > '+
+                '<option>Rap</option>' +
+                '<option>Hip-Hop</option>' +
+                '<option>Pop</option>' +
+                '<option>Alternative</option>' +
+                '<option>Electronic</option>' +
+                '<option>Hard Rock</option>' +
+                '<option>Indie</option>' +
+                '<option>Alternative Rock</option>' +
+                '<option>Teen Pop</option>' +
+                '<option>Emo</option>' +
+                '<option>Folk</option>' +
+                '<option>R&B/Soul</option>' +
+                '<option>Reggae</option>' +
+                '<option>Psychadelic Rock</option>' +
+           ' </select>' +
+           '</td>' +
+           '<td>' +
+            '</td>' +
+           '</tr>'
+        form += '</form>';
+        document.write(form)
+        console.log(document.getElementsByTagName('td'));
+        var allTDs = document.getElementsByTagName('td');
+        var currTD = allTDs[61];
+
+        var genreArray = document.getElementsByTagName("select");
+        genreArray[0].addEventListener("change", function() {
+          
+        var index = genreArray[0].options[genreArray[0].selectedIndex];
+
+
+        var indexList = [];
+
+        for(let z = 0; z < data.songs.length; z++){
+            for (let y = 0; y < data.songs[z].genre.length; y++) {
+
+                if(data.songs[z].genre[y] == index.text){
+                    console.log(data.songs[z].title);
+                    indexList.push(data.songs[z].title);
+                }
+            }
+        }
+        console.log(indexList);
+        var toWrite = '<ul>'
+        for(let u = 0; u < indexList.length;u++){
+           toWrite += '<li>' + indexList[u] + '</li>';
+        }
+        toWrite += '<ul>'+'\n'
+        console.log(toWrite)
+        console.log(document.getElementsByTagName('td')[61])
+        document.getElementsByTagName('td')[61].innerHTML = toWrite;
+       //var stringList='';
+        //for(let s = 0; s < indexList.length; s++){
+          //  stringList +=  indexList[s] 
+        //}
+        //currTD.text = indexList;
+       // var myDiv
+        //currRow.write(stringList);
+        } ) 
+      }
+    )
+    </script>    
+</html>
