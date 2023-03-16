@@ -1,0 +1,78 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    function fetchGetter(){
+     output = fetch( 'https://www.balldontlie.io/api/v1/games?seasons[]=2021&team_ids[]=2&pages[]=0')
+		.then (output => output.text())
+		.then (data => document.getElementById("NBA2").innerHTML = data)
+		.catch (error => console.log(error))	
+   }
+    function getter(){
+        var myRequest = new XMLHttpRequest();
+        myRequest.onreadystatechange = function(){
+        
+            if(myRequest.readyState == 4){
+                console.log('here')
+                
+                if(myRequest.status == 200){
+                    console.log('here1')
+                    var jsonData = myRequest.response;
+                    var stringData = JSON.stringify(jsonData, null, 4);
+                    console.log('here1')
+
+                     document.getElementById("NBA").innerHTML = stringData;
+                     console.log('here2')
+                     //console.log(JSON.stringify(jsonData,null,4));
+                     //console.log(JSON.stringify(jsonData))
+                     
+                }
+                else{
+                    console.log("Status error: " + myRequest.status);
+                }
+            }
+            else{
+                console.log("Ignored readyState: " + myRequest.readyState);
+            }
+        
+        
+        }
+        myRequest.open('GET', 'https://www.balldontlie.io/api/v1/games?seasons[]=2021&team_ids[]=2&pages[]=0');
+        myRequest.send();
+        fetchGetter();
+    }
+
+</script>
+<body onload = "getter()">
+
+    <h2 style="text-align: center;"> Using AJAX data pattern</h2><br>
+    <p style="text-align: center;" id="NBA"></p>
+    <h2 style="text-align: center;"> Using Fetch Function ()</h2><br>
+    <p style="text-align: center;" id="NBA2"></p>
+    <br>
+    <p><h2>About the API and What it Does:</h2></p>
+    <ul>
+        <li>This API called <b>balldontlie.io </b> is an open-source project that offers access to a wide range of NBA related data including players teams, stats, regular season averages since 1979 and more as well as error codes to help users best parse through the data effectively.</li>
+    </ul>
+    <p><h2>Website Citation:</h2></p>
+    <ul>
+        <li>Github. (n.d.). Introduction. balldontlie API. Retrieved March 15, 2023, from https://www.balldontlie.io/home.html?shell#introduction </li>
+    </ul>
+    <p><h2>Options I Used</h2></p>
+    <ul>
+        <li>For this request I used the <em>Get All Games</em> endpoint and I used the query parameters seasons, teams, and pages. Thus, in this way I was able to use thse filters to return the first page of data ( first 25 games) played by the Boston Celtics at the start of the 2021 NBA season. </li>
+    </ul>
+    <p><h2>Two Useful Applications:</h2></p>
+    <ol>
+       <li style="display: block;">1. One useful application of this API is that it can be used to justify arguments and conclusions about the analysis and comparision of players in real time, using only their most recent statistics. Access to this data can be used to plot trends over many years or a relatveily recent time period without having to search through files on the internet, download them, store them on one's own servers and process them, saving much time and space in essence automating the entire workflow. 
+           According to the author, the data in this API prodcues live game stats every 10 minutes, thus in-game player trends can be tracked and used to make suppositions about who will win the game. If this applies to over the course of a season, this can be used to predict the degree of success a team will have such as if they will make the playoffs, win a championship, etc.</li>
+           <br><br>
+       <li style="display: inline-block;"></li> 2. Another useful application of this API is that if you want to create a webiste that recaps basketball games for those aren't able to watch, those with the quickest website uplaods tend to receive the most internet traffic. Thus, using this API where all data is consolidated could help automate the collection of metrics from a recent game without having to waste time pulling from a scattered variety of sources. This could also help for those who would want to build an app that reminds them when their favorite team is playing and reports to them periodically how well their favorite player is performing </li>
+    </ol>
+
+</body>
+</html>
